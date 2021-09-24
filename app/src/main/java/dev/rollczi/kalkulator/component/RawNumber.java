@@ -1,4 +1,4 @@
-package dev.rollczi.kalkulator;
+package dev.rollczi.kalkulator.component;
 
 import android.util.Pair;
 
@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class Number {
+public class RawNumber implements DigitsAddableComponent {
 
     private final Pair<List<Integer>, List<Integer>> pairDigits = new Pair<>(new ArrayList<>(), new ArrayList<>());
     private boolean right = false;
-    private Operator endOperator = Operator.NONE;
 
-    public void append(int digit) {
+    @Override
+    public DigitsAddableComponent appendDigit(int digit) {
         this.functionOnList(list -> list.add(digit));
+        return this;
     }
 
     public void dropLast() {
@@ -36,12 +37,20 @@ public class Number {
         this.right = right;
     }
 
-    public void setEndOperator(Operator endOperator) {
-        this.endOperator = endOperator;
+    @Override
+    public double mergeValuesValue() {
+        int size = pairDigits.second.size();
+        double out = 0;
+
+        for (int i = 0; i < size; i++) {
+            out += pairDigits.second.get(i) * Math.max(10 * (size - i), 1);
+        }
+
+        return out;
     }
 
-    public boolean hasMathOperator() {
-        return endOperator != null && endOperator != Operator.NONE && endOperator != Operator.PERCENT;
+    public FinalNumber toFinalNumber() {
+        return new FinalNumber(this.mergeValuesValue());
     }
 
 }
