@@ -3,12 +3,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://repo.codemc.io/repository/maven-public/" }
+
+        maven { url 'https://repo.panda-lang.org/releases' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.2"
-        //classpath "org.panda-lang:expressible:1.0.16"
-
+        classpath "org.panda-lang:expressible:1.0.16"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

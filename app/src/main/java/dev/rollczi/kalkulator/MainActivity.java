@@ -15,6 +15,7 @@ import java.util.Iterator;
 public class MainActivity extends AppCompatActivity {
 
     private final ButtonsManager buttonsManager = new ButtonsManager();
+    private final CalculatorService calculatorService = new CalculatorService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
