@@ -6,7 +6,7 @@ public interface Calculable {
 
     Component calcWith(Component number);
 
-    Component getComponent();
+    DigitsAddableComponent getComponent();
 
     Operator getOperator();
 

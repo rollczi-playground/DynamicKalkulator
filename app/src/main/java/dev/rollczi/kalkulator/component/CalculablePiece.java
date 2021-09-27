@@ -4,21 +4,21 @@ import dev.rollczi.kalkulator.Operator;
 
 public class CalculablePiece implements Calculable {
 
-    private final Component number;
+    private final DigitsAddableComponent number;
     private Operator operator;
 
-    public CalculablePiece(Component number, Operator operator) {
+    public CalculablePiece(DigitsAddableComponent number, Operator operator) {
         this.number = number;
         this.operator = operator;
     }
 
     @Override
     public Component calcWith(Component b) {
-        return operator.calculate(number, b);
+        return operator.calculate(number, b).orElseGet((error) -> new FinalNumber(Double.NaN));
     }
 
     @Override
-    public Component getComponent() {
+    public DigitsAddableComponent getComponent() {
         return number;
     }
 

@@ -16,12 +16,13 @@ public class RawNumber implements DigitsAddableComponent {
     private boolean right = false;
 
     @Override
-    public DigitsAddableComponent appendDigit(int digit) {
+    public RawNumber appendDigit(int digit) {
         this.functionOnList(list -> list.add(digit));
         return this;
     }
 
-    public void dropLast() {
+    @Override
+    public void removeLastElement() {
         if (functionOnList(List::isEmpty)) {
             if (pairDigits.second.isEmpty()) {
                 right = false;
@@ -39,6 +40,11 @@ public class RawNumber implements DigitsAddableComponent {
 
     public void setRight(boolean right) {
         this.right = right;
+    }
+
+    @Override
+    public boolean isRemoved() {
+        return this.pairDigits.first.isEmpty() && this.pairDigits.second.isEmpty();
     }
 
     @Override
@@ -63,10 +69,10 @@ public class RawNumber implements DigitsAddableComponent {
         }
 
         for (int i = 0, size = pairDigits.second.size(); i < size; i++) {
-            BigDecimal addZeros = BigDecimal.valueOf(Math.pow(10, i + 1));
+            BigDecimal removeZero = BigDecimal.valueOf(Math.pow(10, i + 1));
             BigDecimal value = BigDecimal.valueOf(pairDigits.second.get(i));
 
-            out = out.add(value.divide(addZeros, MathContext.DECIMAL64));
+            out = out.add(value.divide(removeZero, MathContext.DECIMAL64));
         }
 
         return out;

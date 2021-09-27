@@ -30,4 +30,7 @@ public class Brackets extends Algorithm implements DigitsAddableComponent {
         this.closed = closed;
     }
 
+    public boolean isClosed() {
+        return closed;
+    }
 }

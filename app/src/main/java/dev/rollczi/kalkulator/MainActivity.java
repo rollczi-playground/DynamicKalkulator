@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextSize(50F);
 
         buttonsManager
-                .add("DEL", button -> {} )
+                .add("DEL", button -> calculatorService.del())
                 .add("7", button -> calculatorService.digit(7))
                 .add("8", button -> calculatorService.digit(8))
                 .add("9", button -> calculatorService.digit(9))
@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 .add(".", button -> calculatorService.dot())
                 .add("=", button -> calculatorService.sum())
                 .add("+", button -> calculatorService.operator(Operator.ADD))
-                .add("CE", button -> {} )
+                .add("CE", button -> calculatorService.clear())
                 .add("+/-", button -> {} )
-                .add("%", button -> {} )
+                .add("%", button -> calculatorService.percent())
                 ;
 
         Iterator<ButtonData> iterator = buttonsManager.getButtons().values().iterator();

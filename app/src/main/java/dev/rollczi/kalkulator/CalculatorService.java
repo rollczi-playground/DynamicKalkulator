@@ -34,6 +34,16 @@ public class CalculatorService {
         refresh();
     }
 
+    public void percent() {
+        algorithm.percent();
+        refresh();
+    }
+
+    public void del() {
+        algorithm.removeLastElement();
+        refresh();
+    }
+
     public void clear() {
         algorithm = new Algorithm();
         refresh();
@@ -50,7 +60,7 @@ public class CalculatorService {
     }
 
     public double doubleValue() {
-        return algorithm.calculateResult().orElseGet(s -> 0.0);
+        return algorithm.calculateResult().orElseGet(error -> Double.NaN);
     }
 
     public void refresh() {

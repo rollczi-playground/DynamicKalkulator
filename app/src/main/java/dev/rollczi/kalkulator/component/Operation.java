@@ -4,19 +4,24 @@ import java.math.BigDecimal;
 
 import dev.rollczi.kalkulator.Operator;
 import panda.std.Pair;
+import panda.std.Result;
 
 public class Operation implements Component {
 
-    private final Pair<Component, Component> pair;
+    private final Pair<DigitsAddableComponent, DigitsAddableComponent> pair;
     private final Operator operator;
 
-    public Operation(Pair<Component, Component> pair, Operator operator) {
+    public Operation(Pair<DigitsAddableComponent, DigitsAddableComponent> pair, Operator operator) {
         this.pair = pair;
         this.operator = operator;
     }
 
-    public Component calc() {
+    public Result<Component, String> calculate() {
         return operator.calculate(pair.getFirst(), pair.getSecond());
+    }
+
+    public Pair<DigitsAddableComponent, DigitsAddableComponent> getPair() {
+        return pair;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class Operation implements Component {
 
     @Override
     public BigDecimal getBigDecimal() {
-        return this.calc().getBigDecimal();
+        return this.calculate().orElseGet((error) -> new FinalNumber(Double.NaN)).getBigDecimal();
     }
     
 }

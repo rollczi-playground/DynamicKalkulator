@@ -5,6 +5,7 @@ import java.math.MathContext;
 
 import dev.rollczi.kalkulator.component.Component;
 import dev.rollczi.kalkulator.component.FinalNumber;
+import panda.std.Result;
 import panda.std.function.TriFunction;
 
 public enum Operator {
@@ -23,8 +24,13 @@ public enum Operator {
         this.function = function;
     }
 
-    public Component calculate(Component a, Component b) {
-        return new FinalNumber(function.apply(a.getBigDecimal(), b.getBigDecimal(), MathContext.DECIMAL64).doubleValue());
+    public Result<Component, String> calculate(Component a, Component b) {
+        if (this == DIVIDE && b.getDouble() == 0.0) {
+            return Result.error("Nie można dzielić przez zero!");
+        }
+
+        double value = function.apply(a.getBigDecimal(), b.getBigDecimal(), MathContext.DECIMAL64).doubleValue();
+        return Result.ok(new FinalNumber(value));
     }
 
     public char getIcon() {
