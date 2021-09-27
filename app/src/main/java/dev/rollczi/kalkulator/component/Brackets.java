@@ -21,11 +21,13 @@ public class Brackets extends Algorithm implements DigitsAddableComponent {
         return super.appendDigit(digit);
     }
 
+    @Override
+    public void setRight(boolean right) {
+        digitComponentOption.peek(component -> component.setRight(true));
+    }
+
     public void setClosed(boolean closed) {
         this.closed = closed;
     }
 
-    public boolean isClosed() {
-        return closed;
-    }
 }

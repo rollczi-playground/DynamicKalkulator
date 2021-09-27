@@ -4,4 +4,6 @@ public interface DigitsAddableComponent extends Component {
 
     DigitsAddableComponent appendDigit(int digit);
 
+    void setRight(boolean right);
+
 }

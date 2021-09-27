@@ -24,36 +24,36 @@ public class MainActivity extends AppCompatActivity {
 
         RelativeLayout mainLayout = findViewById(R.id.layout);
 
-
         LayoutParams layoutMax = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         layoutMax.leftMargin += 50;
         layoutMax.rightMargin += 50;
 
         LinearLayout textLayout = new LinearLayout(this);
         TextView textView = new TextView(this);
-        textView.setText("0");
+        calculatorService.setRefreshScreen(textView::setText);
         textLayout.setLayoutParams(layoutMax);
         textLayout.addView(textView, layoutMax);
         mainLayout.addView(textLayout, -1);
+        textView.setTextSize(50F);
 
         buttonsManager
                 .add("DEL", button -> {} )
-                .add("7", button -> textView.setText("7"))
-                .add("8", button -> {})
-                .add("9", button -> {})
-                .add("/", button -> {})
-                .add("4", button -> {})
-                .add("5", button -> {})
-                .add("6", button -> {})
-                .add("*", button -> {})
-                .add("1", button -> {})
-                .add("2", button -> {})
-                .add("3", button -> {} )
-                .add("-", button -> {} )
-                .add("0", button -> {} )
-                .add(".", button -> {} )
-                .add("=", button -> {} )
-                .add("+", button -> {} )
+                .add("7", button -> calculatorService.digit(7))
+                .add("8", button -> calculatorService.digit(8))
+                .add("9", button -> calculatorService.digit(9))
+                .add("/", button -> calculatorService.operator(Operator.DIVIDE))
+                .add("4", button -> calculatorService.digit(4))
+                .add("5", button -> calculatorService.digit(5))
+                .add("6", button -> calculatorService.digit(6))
+                .add("*", button -> calculatorService.operator(Operator.MULTIPLY))
+                .add("1", button -> calculatorService.digit(1))
+                .add("2", button -> calculatorService.digit(2))
+                .add("3", button -> calculatorService.digit(3))
+                .add("-", button -> calculatorService.operator(Operator.SUBTRACT))
+                .add("0", button -> calculatorService.digit(0))
+                .add(".", button -> calculatorService.dot())
+                .add("=", button -> calculatorService.sum())
+                .add("+", button -> calculatorService.operator(Operator.ADD))
                 .add("CE", button -> {} )
                 .add("+/-", button -> {} )
                 .add("%", button -> {} )

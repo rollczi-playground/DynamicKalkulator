@@ -1,8 +1,15 @@
 package dev.rollczi.kalkulator.component;
 
+import java.math.BigDecimal;
+
 public interface Component {
 
-    //TODO: Lepiej zrobić te API do Megrowania
-    double mergeValuesValue();
+    String render();
+
+    BigDecimal getBigDecimal();
+
+    default double getDouble() {
+        return this.getBigDecimal().doubleValue();
+    }
 
 }

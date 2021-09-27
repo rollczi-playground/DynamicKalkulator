@@ -1,5 +1,7 @@
 package dev.rollczi.kalkulator.component;
 
+import java.math.BigDecimal;
+
 public class FinalNumber implements Component {
 
     private final double value;
@@ -9,8 +11,17 @@ public class FinalNumber implements Component {
     }
 
     @Override
-    public double mergeValuesValue() {
-        return value;
+    public String render() {
+        if (value - Math.floor(value) == 0.0) {
+            return String.valueOf(Integer.valueOf((int) value));
+        }
+
+        return String.valueOf(value);
+    }
+
+    @Override
+    public BigDecimal getBigDecimal() {
+        return BigDecimal.valueOf(value);
     }
 
 }

@@ -18,6 +18,11 @@ public class CalculablePiece implements Calculable {
     }
 
     @Override
+    public Component getComponent() {
+        return number;
+    }
+
+    @Override
     public Operator getOperator() {
         return operator;
     }

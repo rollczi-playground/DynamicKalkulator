@@ -1,26 +1,34 @@
 package dev.rollczi.kalkulator;
 
-import java.util.function.BiFunction;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 import dev.rollczi.kalkulator.component.Component;
 import dev.rollczi.kalkulator.component.FinalNumber;
+import panda.std.function.TriFunction;
 
 public enum Operator {
-    ADD     (1, Double::sum),
-    SUBTRACT(1, (a, b) -> a - b),
-    MULTIPLY(2, (a, b) -> a * b),
-    DIVIDE  (2, (a, b) -> a / b);
+    ADD     ('+', 1, BigDecimal::add),
+    SUBTRACT('-', 1, BigDecimal::subtract),
+    MULTIPLY('*', 2, BigDecimal::multiply),
+    DIVIDE  ('/', 2, BigDecimal::divide);
 
+    private final char icon;
     private final int priority;
-    private final BiFunction<Double, Double, Number> function;
+    private final TriFunction<BigDecimal, BigDecimal, MathContext, BigDecimal> function;
 
-    Operator(int priority, BiFunction<Double, Double, Number> function) {
+    Operator(char icon, int priority, TriFunction<BigDecimal, BigDecimal, MathContext, BigDecimal> function) {
+        this.icon = icon;
         this.priority = priority;
         this.function = function;
     }
 
     public Component calculate(Component a, Component b) {
-        return new FinalNumber(function.apply(a.mergeValuesValue(), b.mergeValuesValue()).doubleValue());
+        return new FinalNumber(function.apply(a.getBigDecimal(), b.getBigDecimal(), MathContext.DECIMAL64).doubleValue());
+    }
+
+    public char getIcon() {
+        return icon;
     }
 
     public int getPriority() {

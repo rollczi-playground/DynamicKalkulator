@@ -6,6 +6,8 @@ public interface Calculable {
 
     Component calcWith(Component number);
 
+    Component getComponent();
+
     Operator getOperator();
 
     void setOperator(Operator operator);

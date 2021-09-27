@@ -1,14 +1,16 @@
 package dev.rollczi.kalkulator.component;
 
+import java.math.BigDecimal;
+
 import dev.rollczi.kalkulator.Operator;
 import panda.std.Pair;
 
 public class Operation implements Component {
 
-    private final Pair<RawNumber, RawNumber> pair;
+    private final Pair<Component, Component> pair;
     private final Operator operator;
 
-    public Operation(Pair<RawNumber, RawNumber> pair, Operator operator) {
+    public Operation(Pair<Component, Component> pair, Operator operator) {
         this.pair = pair;
         this.operator = operator;
     }
@@ -18,8 +20,13 @@ public class Operation implements Component {
     }
 
     @Override
-    public double mergeValuesValue() {
-        return this.calc().mergeValuesValue();
+    public String render() {
+        return pair.getFirst().render() + " " + operator.getIcon() + " " + pair.getSecond().render();
+    }
+
+    @Override
+    public BigDecimal getBigDecimal() {
+        return this.calc().getBigDecimal();
     }
     
 }

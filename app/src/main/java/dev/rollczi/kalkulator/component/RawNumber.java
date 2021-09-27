@@ -2,9 +2,13 @@ package dev.rollczi.kalkulator.component;
 
 import android.util.Pair;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import panda.std.Result;
 
 public class RawNumber implements DigitsAddableComponent {
 
@@ -38,19 +42,59 @@ public class RawNumber implements DigitsAddableComponent {
     }
 
     @Override
-    public double mergeValuesValue() {
-        int size = pairDigits.second.size();
-        double out = 0;
+    public String render() {
+        double value = this.getDouble();
 
-        for (int i = 0; i < size; i++) {
-            out += pairDigits.second.get(i) * Math.max(10 * (size - i), 1);
+        if (value - Math.floor(value) == 0.0) {
+            return (int) value + (right ? "." : "");
+        }
+
+        return String.valueOf(value);
+    }
+
+    @Override
+    public BigDecimal getBigDecimal() {
+        BigDecimal out = new BigDecimal(0);
+
+        for (int i = 0, size = pairDigits.first.size(); i < size; i++) {
+            double addZeros = Math.max(Math.pow(10, size - i - 1), 1);
+
+            out = out.add(BigDecimal.valueOf(pairDigits.first.get(i) * addZeros));
+        }
+
+        for (int i = 0, size = pairDigits.second.size(); i < size; i++) {
+            BigDecimal addZeros = BigDecimal.valueOf(Math.pow(10, i + 1));
+            BigDecimal value = BigDecimal.valueOf(pairDigits.second.get(i));
+
+            out = out.add(value.divide(addZeros, MathContext.DECIMAL64));
         }
 
         return out;
     }
 
     public FinalNumber toFinalNumber() {
-        return new FinalNumber(this.mergeValuesValue());
+        return new FinalNumber(this.getBigDecimal().doubleValue());
+    }
+
+    public static Result<RawNumber, String> of(double value) {
+        RawNumber rawNumber = new RawNumber();
+
+        for (char c : String.valueOf(value).toCharArray()) {
+            if (c == '.') {
+                rawNumber.setRight(true);
+                continue;
+            }
+
+            int numericValue = Character.getNumericValue(c);
+
+            if (numericValue == - 1) {
+                return Result.error("Błąd!");
+            }
+
+            rawNumber.appendDigit(numericValue);
+        }
+
+        return Result.ok(rawNumber);
     }
 
 }
