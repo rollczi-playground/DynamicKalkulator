@@ -3,7 +3,6 @@ package dev.rollczi.kalkulator.component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import dev.rollczi.kalkulator.Operator;
 import panda.std.Option;

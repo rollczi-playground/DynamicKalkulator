@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 .add("CE", button -> calculatorService.clear())
                 .add("+/-", button -> {} )
                 .add("%", button -> calculatorService.percent())
+                .add("(", button -> calculatorService.openBrackets())
+                .add(")", button -> calculatorService.closeBrackets())
                 ;
 
         Iterator<ButtonData> iterator = buttonsManager.getButtons().values().iterator();

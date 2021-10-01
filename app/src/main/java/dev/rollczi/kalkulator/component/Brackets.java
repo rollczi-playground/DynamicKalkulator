@@ -5,6 +5,11 @@ public class Brackets extends Algorithm implements DigitsAddableComponent {
     private boolean closed = false;
 
     @Override
+    public String render() {
+        return "(" + super.render() + (closed ? ")" : "");
+    }
+
+    @Override
     public void closeBrackets() {
         this.digitComponentOption
                 .is(Brackets.class)
