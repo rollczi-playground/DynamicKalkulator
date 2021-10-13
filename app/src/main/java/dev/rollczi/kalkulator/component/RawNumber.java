@@ -3,6 +3,7 @@ package dev.rollczi.kalkulator.component;
 import android.util.Pair;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,14 @@ public class RawNumber implements DigitsAddableComponent {
 
     private final Pair<List<Integer>, List<Integer>> pairDigits = new Pair<>(new ArrayList<>(), new ArrayList<>());
     private boolean right = false;
+    private boolean negative = false;
 
     @Override
     public RawNumber appendDigit(int digit) {
+        if (digit == 0 && functionOnList(list -> list.isEmpty() || (list.size() == 1 && list.get(0).equals(0)))) {
+            return this;
+        }
+
         this.functionOnList(list -> list.add(digit));
         return this;
     }
@@ -47,12 +53,20 @@ public class RawNumber implements DigitsAddableComponent {
         return this.pairDigits.first.isEmpty() && this.pairDigits.second.isEmpty();
     }
 
+    public void setNegative(boolean negative) {
+        this.negative = negative;
+    }
+
+    public boolean isNegative() {
+        return negative;
+    }
+
     @Override
     public String render() {
         double value = this.getDouble();
 
         if (value - Math.floor(value) == 0.0) {
-            return (int) value + (right ? "." : "");
+            return  Math.floor(value) + (right ? "." : "");
         }
 
         return String.valueOf(value);
@@ -75,6 +89,10 @@ public class RawNumber implements DigitsAddableComponent {
             out = out.add(value.divide(removeZero, MathContext.DECIMAL64));
         }
 
+        if (negative) {
+            out = out.negate();
+        }
+
         return out;
     }
 
@@ -88,6 +106,11 @@ public class RawNumber implements DigitsAddableComponent {
         for (char c : String.valueOf(value).toCharArray()) {
             if (c == '.') {
                 rawNumber.setRight(true);
+                continue;
+            }
+
+            if (c == '-') {
+                rawNumber.setNegative(!rawNumber.isNegative());
                 continue;
             }
 
